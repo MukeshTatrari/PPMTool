@@ -1,5 +1,5 @@
 # the first stage of our build will use a maven 3.6.1 parent image
-FROM maven:3.8.1-jdk-11-slim AS MAVEN_BUILD
+FROM maven:3.8.1-ibmjava-alpine  AS MAVEN_BUILD
 
 # copy the pom and src code to the container
 COPY ./ ./
@@ -12,6 +12,8 @@ FROM openjdk:11-jre-slim
 
 # copy only the artifacts we need from the first stage and discard the rest
 COPY --from=MAVEN_BUILD /target/PPMTool-0.0.1-SNAPSHOT.jar /PPMTool-dashboard.jar
+
+EXPOSE 8081
 
 # set the startup command to execute the jar
 CMD ["java", "-jar", "/PPMTool-dashboard.jar"]

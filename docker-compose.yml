@@ -3,12 +3,22 @@ version: "3.8"
 services:
   mysqldb:
     container_name: mysqldb
-    image: mysql
+    image: "mysql:8.0"
+    ports:
+      - "3308:3308"
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
+      - persistent:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: root
+        MYSQL_DATABASE: "ppmtcourse"
+        MYSQL_USER: "user"
+        MYSQL_PASSWORD: "test"
+        MYSQL_ROOT_PASSWORD: "root"
+        MYSQL_ROOT_USER: "root"
     networks:
-      ppm-tool-mysql-net:
+      springboot-mysql-net:
 
   ppm-tool:
     container_name: ppm-tool-backend
@@ -16,28 +26,23 @@ services:
       context: ./
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
       - mysqldb
+    links:
+      - mysqldb
     networks:
-      ppm-tool-mysql-net:
-    restart: on-failure
-
-  nginx:
-      depends_on:
-        - ppm-tool
-        - client
-      restart: always
-      build:
-        dockerfile: Dockerfile
-        context: ./nginx
-      ports:
-        - "8081:80"
+      springboot-mysql-net:
+    restart: no
   client:
-      stdin_open: true
+      container_name: ppm-tool-frontend
       build:
+        context: ./frontend
         dockerfile: Dockerfile
-        context: ./src/frontend
-
+      networks:
+        springboot-mysql-net:
 networks:
-  ppm-tool-mysql-net:
+  springboot-mysql-net:
+
+volumes:
+  persistent:
