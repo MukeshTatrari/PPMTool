@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: root
+    networks:
+      ppm-tool-mysql-net:
+
+  ppm-tool:
+    container_name: ppm-tool-backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqldb
+    networks:
+      ppm-tool-mysql-net:
+    restart: on-failure
+
+  nginx:
+      depends_on:
+        - ppm-tool
+        - client
+      restart: always
+      build:
+        dockerfile: Dockerfile
+        context: ./nginx
+      ports:
+        - "8081:80"
+  client:
+      stdin_open: true
+      build:
+        dockerfile: Dockerfile
+        context: ./src/frontend
+
+networks:
+  ppm-tool-mysql-net:
