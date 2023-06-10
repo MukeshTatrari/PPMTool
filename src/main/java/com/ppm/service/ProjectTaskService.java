@@ -11,6 +11,8 @@ import com.ppm.repositories.ProjectTaskRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectTaskService {
@@ -46,9 +48,9 @@ public class ProjectTaskService {
 		}
 	}
 
-	public Iterable<ProjectTask> findBacklogById(String backlog_id,String userName) {
+	public List<ProjectTask> findBacklogById(String backlog_id, String userName) {
 		projectService.findByProjectIdentifier(backlog_id, userName);
-		Iterable<ProjectTask> projects = projectTaskRepository.findByProjectIdentifier(backlog_id);
+		List<ProjectTask> projects = projectTaskRepository.findByProjectIdentifier(backlog_id);
 		if (ObjectUtils.isEmpty(projects)) {
 			throw new ProjectNotFoundException("Project with Id " + backlog_id + "  does not exists");
 		} else {

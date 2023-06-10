@@ -69,9 +69,9 @@ public class UserController {
 	}
 
 	@GetMapping("/{userName}")
-	public ResponseEntity<?> getAllUsers(@PathVariable String userName) {
+	public ResponseEntity<?> getUser(@PathVariable String userName) {
 
-		return ResponseEntity.ok(userService.saveUser(userName));
+		return ResponseEntity.ok(userService.searchByUserName(userName));
 	}
 
 }

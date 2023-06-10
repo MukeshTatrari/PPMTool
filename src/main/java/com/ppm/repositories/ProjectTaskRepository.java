@@ -1,14 +1,17 @@
 package com.ppm.repositories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.ppm.domain.ProjectTask;
 
-@Repository
-public interface ProjectTaskRepository extends CrudRepository<ProjectTask, Long> {
+import java.util.List;
 
-	public Iterable<ProjectTask> findByProjectIdentifier(String projectIdentifier);
+@Repository
+public interface ProjectTaskRepository extends JpaRepository<ProjectTask, Long> {
+
+	public List<ProjectTask> findByProjectIdentifier(String projectIdentifier);
 
 	ProjectTask findByProjectSequence(String projectSequence);
 

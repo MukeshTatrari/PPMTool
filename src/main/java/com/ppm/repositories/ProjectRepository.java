@@ -1,18 +1,20 @@
 package com.ppm.repositories;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.ppm.domain.Project;
 
-@Repository
-public interface ProjectRepository extends CrudRepository<Project, Long> {
+import java.util.List;
 
-	public Project findByProjectIdentifier(String projectIdentifier);
+@Repository
+public interface ProjectRepository extends JpaRepository<Project, Long> {
+
+	 Project findByProjectIdentifier(String projectIdentifier);
 
 	@Override
-	Iterable<Project> findAll();
+	List<Project> findAll();
 
-	Iterable<Project> findByProjectLeader(String projectLeader);
+	List<Project> findByProjectLeader(String projectLeader);
 
 }

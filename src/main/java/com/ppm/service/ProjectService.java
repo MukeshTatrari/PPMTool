@@ -14,6 +14,8 @@ import com.ppm.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -70,7 +72,7 @@ public class ProjectService {
 		return project;
 	}
 
-	public Iterable<Project> findAll(String userName) {
+	public List<Project> findAll(String userName) {
 		return repository.findByProjectLeader(userName);
 	}
 
